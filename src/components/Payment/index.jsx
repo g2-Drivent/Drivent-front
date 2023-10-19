@@ -7,7 +7,7 @@ import TicketTypeScreen from "./ticketTypeScreen";
 export default function TicketPaymentScreen(){
     const { enrollment } = useEnrollment();
     useEffect(()=>{
-        console.log(enrollment);
+
     },[enrollment]);
     
     return(
