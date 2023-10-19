@@ -1,3 +1,8 @@
+import TicketPaymentScreen from "../../../components/Payment";
+import UnauthorizedScreen from "../../../components/Payment/unauthorizedScreen";
+
 export default function Payment() {
-  return 'Pagamento: Em breve!';
+  return (
+    <TicketPaymentScreen/>
+  );
 }
