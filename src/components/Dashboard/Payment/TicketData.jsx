@@ -1,13 +1,19 @@
 import styled from 'styled-components';
 
-export default function TicketData() {
+export default function TicketData({ticket}) {
+  const {price, includesHotel,isRemote,name,id} = ticket.TicketType;
+  const infoTextOnline = isRemote?'Online':'Presencial';
+  let infoTextHotel = '';
+  if(!isRemote) infoTextHotel = includesHotel?' + Com Hotel':' + Sem Hotel';
 
+
+  console.log(ticket.TicketType.price);
     return (
         <TicketContainer>            
             <h2>Ingresso escolhido</h2>
             <div className='ticket-info'>
-                <p className='info'>Presencial + Com Hotel</p>
-                <p className='value'>R$ 600</p>
+                <p className='info'>{infoTextOnline + infoTextHotel}</p>
+                <p className='value'>R$ {price}</p>
             </div>
             <h2>Pagamento</h2>
         </TicketContainer>

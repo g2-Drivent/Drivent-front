@@ -1,24 +1,29 @@
 import styled from 'styled-components';
-import TicketData from '../../../components/Dashboard/Payment/TicketData';
-import CardComponent from '../../../components/Dashboard/Payment/CardContainer';
-import ConfirmComponent from '../../../components/Dashboard/Payment/ConfirmContainer';
+import { useEffect } from 'react';
+import useEnrollment from '../../../hooks/api/useEnrollment';
+import TicketPaymentScreen from "../../../components/Payment";
+import UnauthorizedScreen from "../../../components/Payment/unauthorizedScreen";
+
 
 
 export default function Payment() {
+  const { enrollment } = useEnrollment();
+  useEffect(()=>{
 
+  },[enrollment]);
+  
   return (
-    <PaymentContainer>
-      <h1>Ingresso e Pagamento</h1>
-      {/* <TicketData/>
+  <PaymentContainer>
+    <h1>Ingresso e Pagamento</h1>
+    {enrollment?
+        <TicketPaymentScreen/>
+      :
+        <UnauthorizedScreen/>
+    }
+  </PaymentContainer>
+);
 
-      <CardComponent /> */}
-
-      <ConfirmComponent />
-
-    </PaymentContainer>
-
-
-  );
+ 
 }
 
 const PaymentContainer = styled.div`

@@ -3,6 +3,7 @@ import Card from '../../../assets/images/card-model.png'
 import { useContext, useState } from 'react';
 import UserContext from '../../../contexts/UserContext';
 import axios from 'axios';
+import useToken from '../../../hooks/useToken';
 
 export default function CardComponent() {
 
@@ -12,7 +13,7 @@ export default function CardComponent() {
     const [cvv, setCvv] = useState('');
     const [disabled, setDisabled] = useState(false);
     //const {userData} = useContext(UserContext);
-    const token = userData.token;
+    const token = useToken();
 
     console.log(token)
     function payment(e) {
