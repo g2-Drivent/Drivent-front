@@ -3,15 +3,23 @@ import { useEffect, useState } from "react";
 import OptionBox from "./OptionBox";
 import { AnalyseOptions } from "./analyseOptions";
 import useTicketType from "../../hooks/api/useTicketType";
+import usePostTicket from "../../hooks/api/usePostTicket";
+import useToken from "../../hooks/useToken";
+import { toast } from "react-toastify";
 
 export default function TicketTypeScreen(){
     const {ticketType} = useTicketType();
+    const{postTicketLoading,postTicketError,postTicket} = usePostTicket();
+    const token = useToken();
+    
     const [infos, setInfos] = useState(AnalyseOptions([]));
     const [isInPerson, setIsInPerson] = useState(null);
     const [hasHotel, setHasHotel] = useState(null);
     const [precoTotal, setPrecoTotal] = useState({mod:0,hotel:0});
     const [selectedId, setSelectedId] = useState(null);
     
+
+
     useEffect(()=>{
         if(ticketType){
             setInfos(AnalyseOptions(ticketType));
@@ -19,6 +27,16 @@ export default function TicketTypeScreen(){
 
     },[ticketType]);
 
+    async function registerTicket(){
+        try{
+        console.log("aqui");
+        const ticket = await postTicket({ticketTypeId:selectedId},token);
+        toast('Ticket registrado com sucesso!');
+        } catch (err) {
+            console.log(err);
+            toast('Não foi possível fazer o login!');
+        }
+    }
 
     function SelectPresential(){
         setIsInPerson(true);
@@ -44,6 +62,7 @@ export default function TicketTypeScreen(){
         setSelectedId(infos.ids.presentialHotelId);
     }
 
+
     return(
         <>
             <InformationText>Primeiro, escolha sua modalidade de ingresso</InformationText>
@@ -63,7 +82,7 @@ export default function TicketTypeScreen(){
             }
             {(selectedId!== null) && <InformationText>Fechado! O total ficou em <span>R$ {(precoTotal.mod+precoTotal.hotel)}</span>. Agora é só confirmar:</InformationText>}
             
-            {(selectedId!== null) && <ResevoirButton>RESERVAR INGRESSO (id:{selectedId})</ResevoirButton>}
+            {(selectedId!== null) && <ResevoirButton onClick={()=>{registerTicket()}}>RESERVAR INGRESSO (id:{selectedId})</ResevoirButton>}
         </>
     )
 }
