@@ -1,36 +1,27 @@
-import styled from "styled-components"
-import UnauthorizedScreen from "./unauthorizedScreen"
-import useEnrollment from "../../hooks/api/useEnrollment";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import TicketTypeScreen from "./ticketTypeScreen";
+import useTicket from "../../hooks/api/useTicket";
+import TicketData from "../Dashboard/Payment/TicketData";
+import CardComponent from "../Dashboard/Payment/CardContainer";
+import ConfirmComponent from "../Dashboard/Payment/ConfirmContainer";
 
 export default function TicketPaymentScreen(){
-    const { enrollment } = useEnrollment();
-    useEffect(()=>{
 
-    },[enrollment]);
-    
+    let{ticket,getTicket} = useTicket();
+    useEffect(()=>{},[ticket]);
+
+
     return(
         <>
-            <TitleText>
-                Ingresso e pagamento
-            </TitleText>
-            {
-                enrollment?
-                    <TicketTypeScreen/>
-                :
-                    <UnauthorizedScreen/>
+            {ticket?
+            <> 
+                <TicketData ticket={ticket}/>
+                <CardComponent/>
+                {/* <ConfirmComponent/> */}
+            </>
+            : 
+                <TicketTypeScreen getTicket={getTicket}/>
             }
-
         </>
     )
 }
-
-
-const TitleText = styled.div`
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-    font-size: 34px;
-    line-height: 40px;
-    margin-bottom: 20px;
-`

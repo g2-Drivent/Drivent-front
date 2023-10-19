@@ -7,7 +7,7 @@ import usePostTicket from "../../hooks/api/usePostTicket";
 import useToken from "../../hooks/useToken";
 import { toast } from "react-toastify";
 
-export default function TicketTypeScreen(){
+export default function TicketTypeScreen({ getTicket }){
     const {ticketType} = useTicketType();
     const{postTicketLoading,postTicketError,postTicket} = usePostTicket();
     const token = useToken();
@@ -29,12 +29,12 @@ export default function TicketTypeScreen(){
 
     async function registerTicket(){
         try{
-        console.log("aqui");
-        const ticket = await postTicket({ticketTypeId:selectedId},token);
-        toast('Ticket registrado com sucesso!');
+            const ticket = await postTicket({ticketTypeId:selectedId},token);
+            toast('Ticket registrado com sucesso!');
+            getTicket();
         } catch (err) {
             console.log(err);
-            toast('Não foi possível fazer o login!');
+            toast('Ocorreu algum erro no cadastro do ticket!');
         }
     }
 
@@ -82,7 +82,7 @@ export default function TicketTypeScreen(){
             }
             {(selectedId!== null) && <InformationText>Fechado! O total ficou em <span>R$ {(precoTotal.mod+precoTotal.hotel)}</span>. Agora é só confirmar:</InformationText>}
             
-            {(selectedId!== null) && <ResevoirButton onClick={()=>{registerTicket()}}>RESERVAR INGRESSO (id:{selectedId})</ResevoirButton>}
+            {(selectedId!== null) && <ResevoirButton onClick={()=>{registerTicket()}}>RESERVAR INGRESSO</ResevoirButton>}
         </>
     )
 }
@@ -105,6 +105,7 @@ const ResevoirButton = styled.button`
     border: none;
     border-radius: 4px;
     height: 37px;
+    width: 170px;
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     font-size: 14px;
