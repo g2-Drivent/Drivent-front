@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import TicketData from '../../../components/Dashboard/Payment/TicketData';
 import CardComponent from '../../../components/Dashboard/Payment/CardContainer';
 import ConfirmComponent from '../../../components/Dashboard/Payment/ConfirmContainer';
-
+import TicketPaymentScreen from "../../../components/Payment";
+import UnauthorizedScreen from "../../../components/Payment/unauthorizedScreen";
 
 export default function Payment() {
 
@@ -17,8 +18,9 @@ export default function Payment() {
 
     </PaymentContainer>
 
+);
 
-  );
+  // return ( <TicketPaymentScreen/>);
 }
 
 const PaymentContainer = styled.div`
