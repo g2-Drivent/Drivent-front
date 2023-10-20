@@ -1,26 +1,30 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-//import { PaymentDataContext } from '../../../contexts/PaymentContext';
+import useTicket from '../../../hooks/api/useTicket';
 
 export default function ConfirmComponent() {
-    //const { payment } = useContext(PaymentDataContext);
-    const [payment, setPayment] = useState(true);
+
+    const { ticket } = useTicket();
+
     return (
         <>
-            {payment && (
-                <ConfirmContainer>
-                    <ion-icon name="checkmark-circle"></ion-icon>
-                    <div>
-                        <p><strong>Pagamento confirmado!</strong><br></br> Prossiga para escolha de hospedagem e atividades</p>
-                    </div>
-                </ConfirmContainer>
+            {!ticket || ticket.length === 0 && (
+                <p>Carregando...</p>
             )}
 
-            {!payment && (
-                <ErroConfirm>
-                    <p>Não foi possível concluir o pagamento</p>
-                    <button>Tentar novamente</button>
-                </ErroConfirm>
+            {ticket && (
+                <>
+                    {
+                        ticket.status === 'PAID' && (
+                            <ConfirmContainer>
+                                <ion-icon name="checkmark-circle"></ion-icon>
+                                <div>
+                                    <p><strong>Pagamento confirmado!</strong><br></br> Prossiga para escolha de hospedagem e atividades</p>
+                                </div>
+                            </ConfirmContainer>
+                        )
+                    }
+                </>
             )}
         </>
     )
