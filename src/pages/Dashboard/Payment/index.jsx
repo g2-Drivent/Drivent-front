@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import { useEffect } from 'react';
 import useEnrollment from '../../../hooks/api/useEnrollment';
 import TicketPaymentScreen from "../../../components/Payment";
-import UnauthorizedScreen from "../../../components/Payment/unauthorizedScreen";
+import UnauthorizedScreen from '../../../components/unauthorizedScreen';
+
 
 
 
@@ -18,7 +19,7 @@ export default function Payment() {
     {enrollment?
         <TicketPaymentScreen/>
       :
-        <UnauthorizedScreen/>
+        <UnauthorizedScreen firstLine="Você precisa completar sua inscrição antes" secondLine="de prosseguir pra escolha de ingresso"/>
     }
   </PaymentContainer>
 );

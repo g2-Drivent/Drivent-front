@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-export default function UnauthorizedScreen(){
+export default function UnauthorizedScreen({firstLine,secondLine}){
     return(
     <SuperContainer>
         <TextContainer>
-            <span>Você precisa completar sua inscrição antes</span>
-            <span>de prosseguir pra escolha de ingresso</span>
+            <span>{firstLine}</span>
+            <span>{secondLine}</span>
         </TextContainer>
     </SuperContainer>
     );
@@ -19,7 +19,7 @@ const SuperContainer = styled.div`
 `
 
 const TextContainer = styled.div`
-    width: 388px;
+    min-width: 388px;
     height: 46px;
     display: flex;
     flex-direction: column;
