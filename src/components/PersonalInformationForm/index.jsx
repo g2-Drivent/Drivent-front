@@ -274,7 +274,7 @@ export default function PersonalInformationForm() {
   );
 }
 
-export const StyledTypography = styled(Typography)`
+const StyledTypography = styled(Typography)`
   margin-bottom: 20px!important;
 `;
 
