@@ -1,30 +1,30 @@
 import styled from 'styled-components';
 import Card from '../../../assets/images/card-model.png'
-import { useContext, useState } from 'react';
-import UserContext from '../../../contexts/UserContext';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import useToken from '../../../hooks/useToken';
+import useTicket from '../../../hooks/api/useTicket';
+import { AnalyseOptions } from '../../Payment/analyseOptions';
+import { toast } from 'react-toastify';
 
-export default function CardComponent() {
+export default function CardComponent({getTicket}) {
 
     const [cardNumber, setCardNumber] = useState('');
     const [name, setName] = useState('');
     const [validThru, setValidThru] = useState('');
     const [cvv, setCvv] = useState('');
     const [disabled, setDisabled] = useState(false);
-    //const {userData} = useContext(UserContext);
+    const {ticket} = useTicket();
     const token = useToken();
 
-    console.log(token)
     function payment(e) {
       e.preventDefault();
-      console.log('foi')
 
-      const url = `${import.meta.env.VITE_API_URL}/payment/process`;
+      const url = `${import.meta.env.VITE_API_URL}/payments/process`;
       const card = {
-        ticketId: 1,
+        ticketId: ticket.id,
         cardData: {
-          issuer: 'Visa',
+          issuer: 'Não informado',
           number: cardNumber,
           name,
           expirationDate: validThru,
@@ -37,12 +37,14 @@ export default function CardComponent() {
         headers: { authorization: `Bearer ${token}` },
       })
       .then( () => {
-        console.log('foi')
+        toast('Pagamento registrado com sucesso!');
+        getTicket();
         setDisabled(false)
       }
       )
-      .catch( () => {
-        console.log('foi')
+      .catch( (err) => {
+        console.log(err);
+        toast('Ocorreu algum erro no pagamento do ticket!');
         setDisabled(false)
       })
       
