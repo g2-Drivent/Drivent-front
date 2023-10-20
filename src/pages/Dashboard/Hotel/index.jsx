@@ -10,11 +10,12 @@ import Rooms from "../../../components/Dashboard/Hotel/Rooms";
 import HotelCard from "../../../components/Dashboard/Hotel/HotelCard";
 
 import { StyledTypography } from "../../../components/PersonalInformationForm";
+import UnauthorizedScreen from "../../../components/unauthorizedScreen";
+import useTicket from "../../../hooks/api/useTicket";
 
 export default function Hotel() {
-  const ticket= 1;
-  const payment = 1;
-  const hotelIncluded = 1;
+
+  const ticket = useTicket();
   const { hotels } = useHotel();
   const { booking } = useFindBooking();
   const [selectedHotel, setSelectedHotel] = useState({});
@@ -59,17 +60,12 @@ export default function Hotel() {
         />
       </>
        : <>
-          <div>
-            { !ticket ?
-            <h2>Você precisa completar sua inscrição antes de prosseguir pra escolha de hospedagem</h2> :
-            !payment  ?
-            <h2>Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem</h2> :
-            !hotelIncluded ?
-            <div>
-              <h2>Sua modalidade de ingresso não inclui hospedagem</h2>
-              <h2>Prossiga para a escolha de atividades</h2>
-            </div> : ""}
-          </div>
+            { !ticket.ticket ?
+            <UnauthorizedScreen firstLine="Você precisa completar sua inscrição antes" secondLine="de prosseguir pra escolha de hospedagem"/> :
+            ticket.ticket.status !== 'PAID'  ?
+            <UnauthorizedScreen firstLine="Você precisa ter confirmado pagamento antes" secondLine="de fazer a escolha de hospedagem"/> :
+            !ticket.ticket.TicketType.includesHotel ?
+            <UnauthorizedScreen firstLine="Sua modalidade de ingresso não inclui hospedagem" secondLine="Prossiga para a escolha de atividades"/> : ""}
           <div>
             { hotels && hotels.length > 0 ?
               <HotelsWrapper>
@@ -83,7 +79,7 @@ export default function Hotel() {
                   />
                 )}
               </HotelsWrapper>
-              : <p>Nenhum hotel cadastrado para este evento</p>
+              : ""
             }
           </div>
           {selectedHotel?.id && <Rooms hotel={selectedHotel} />}
