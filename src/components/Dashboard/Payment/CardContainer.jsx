@@ -52,10 +52,16 @@ export default function CardComponent({ getTicket }) {
       })
   }
 
-  function formatNumber (value) {
+  function formatNumber(value) {
     const numericValue = value.replace(/\D/g, '');
     if (numericValue.length <= 16) {
       setCardNumber(numericValue);
+    }
+  }
+
+  const validateName = (value) => {
+    if (value === '' || /^[A-Za-z\s]+$/.test(value)) {
+      setName(value);
     }
   }
 
@@ -70,7 +76,7 @@ export default function CardComponent({ getTicket }) {
     }
   };
 
-  function formatCvv (value) {
+  function formatCvv(value) {
     const numericValue = value.replace(/\D/g, '');
     if (numericValue.length <= 3) {
       setCvv(numericValue);
@@ -94,7 +100,7 @@ export default function CardComponent({ getTicket }) {
               onFocus={e => setFocus(e.target.name)} disabled={disabled} />
             <p>E.g.: 49..., 51..., 36..., 37...</p>
             <input className='input' name="name" placeholder="Name" type="text"
-              fullWidth value={name} onChange={e => setName(e.target.value)}
+              fullWidth value={name} onChange={e => validateName(e.target.value)}
               onFocus={e => setFocus(e.target.name)} disabled={disabled} />
             <div>
               <input className='input-valid' name="expiry" placeholder="Valid Thru" type="text" fullWidth
