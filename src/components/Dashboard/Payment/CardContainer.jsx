@@ -1,85 +1,127 @@
 import styled from 'styled-components';
-import Card from '../../../assets/images/card-model.png'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import useToken from '../../../hooks/useToken';
 import useTicket from '../../../hooks/api/useTicket';
 import { AnalyseOptions } from '../../Payment/analyseOptions';
 import { toast } from 'react-toastify';
+import Cards from 'react-credit-cards-2';
+import 'react-credit-cards-2/dist/es/styles-compiled.css';
 
-export default function CardComponent({getTicket}) {
 
-    const [cardNumber, setCardNumber] = useState('');
-    const [name, setName] = useState('');
-    const [validThru, setValidThru] = useState('');
-    const [cvv, setCvv] = useState('');
-    const [disabled, setDisabled] = useState(false);
-    const {ticket} = useTicket();
-    const token = useToken();
+export default function CardComponent({ getTicket }) {
 
-    function payment(e) {
-      e.preventDefault();
+  const [cardNumber, setCardNumber] = useState('');
+  const [name, setName] = useState('');
+  const [validThru, setValidThru] = useState('');
+  const [cvv, setCvv] = useState('');
+  const [focus, setFocus] = useState('');
+  const [disabled, setDisabled] = useState(false);
+  const { ticket } = useTicket();
+  const token = useToken();
 
-      const url = `${import.meta.env.VITE_API_URL}/payments/process`;
-      const card = {
-        ticketId: ticket.id,
-        cardData: {
-          issuer: 'Não informado',
-          number: cardNumber,
-          name,
-          expirationDate: validThru,
-          cvv
-        }
+  function payment(e) {
+    e.preventDefault();
+
+    const url = `${import.meta.env.VITE_API_URL}/payments/process`;
+    const card = {
+      ticketId: ticket.id,
+      cardData: {
+        issuer: 'Não informado',
+        number: cardNumber,
+        name,
+        expirationDate: validThru,
+        cvv
       }
+    }
 
-      setDisabled(true);
-      axios.post(url, card, {
-        headers: { authorization: `Bearer ${token}` },
-      })
-      .then( () => {
+    setDisabled(true);
+    axios.post(url, card, {
+      headers: { authorization: `Bearer ${token}` },
+    })
+      .then(() => {
         toast('Pagamento registrado com sucesso!');
         getTicket();
         setDisabled(false)
       }
       )
-      .catch( (err) => {
+      .catch((err) => {
         console.log(err);
         toast('Ocorreu algum erro no pagamento do ticket!');
         setDisabled(false)
       })
-      
+  }
 
+  function formatNumber(value) {
+    const numericValue = value.replace(/\D/g, '');
+    if (numericValue.length <= 16) {
+      setCardNumber(numericValue);
     }
+  }
 
-    return (
-        <Container>
+  const validateName = (value) => {
+    if (value === '' || /^[A-Za-z\s]+$/.test(value)) {
+      setName(value);
+    }
+  }
 
-        <form onSubmit={payment}>
-          <div className='card-info'>
-            <img src={Card} />
-            <div className='input-box'>
-              <input className='input' placeholder="Card Number" type="text" fullWidth value={cardNumber} onChange={e => setCardNumber(e.target.value)} disabled={disabled}/>
-              <p>E.g.: 49..., 51..., 36..., 37...</p>
-              <input className='input' placeholder="Name" type="text" fullWidth value={name} onChange={e => setName(e.target.value)} disabled={disabled}/>
-              <div>
-                <input className='input-valid' placeholder="Valid Thru" type="text" fullWidth value={validThru} onChange={e => setValidThru(e.target.value)} disabled={disabled}/>
-                <input className='input-cvc' placeholder="CVC" type="text" fullWidth value={cvv} onChange={e => setCvv(e.target.value)} disabled={disabled}/>
-              </div>
+  function formatValidThru(value) {
+    const numericValue = value.replace(/\D/g, '');
+    if (numericValue.length <= 4) {
+      if (numericValue.length >= 2) {
+        setValidThru(numericValue.substring(0, 2) + '/' + numericValue.substring(2));
+      } else {
+        setValidThru(numericValue);
+      }
+    }
+  };
+
+  function formatCvv(value) {
+    const numericValue = value.replace(/\D/g, '');
+    if (numericValue.length <= 3) {
+      setCvv(numericValue);
+    }
+  };
+
+  return (
+    <Container>
+      <form onSubmit={payment}>
+        <div className='card-info'>
+          <Cards
+            number={cardNumber}
+            expiry={validThru}
+            cvc={cvv}
+            name={name}
+            focused={focus}
+          />
+          <div className='input-box'>
+            <input className='input' name="number" placeholder="Card Number" type="text" fullWidth
+              value={cardNumber} onChange={e => formatNumber(e.target.value)}
+              onFocus={e => setFocus(e.target.name)} disabled={disabled} />
+            <p>E.g.: 49..., 51..., 36..., 37...</p>
+            <input className='input' name="name" placeholder="Name" type="text"
+              fullWidth value={name} onChange={e => validateName(e.target.value)}
+              onFocus={e => setFocus(e.target.name)} disabled={disabled} />
+            <div>
+              <input className='input-valid' name="expiry" placeholder="Valid Thru" type="text" fullWidth
+                value={validThru} onChange={e => formatValidThru(e.target.value)}
+                onFocus={e => setFocus(e.target.name)} disabled={disabled} />
+              <input className='input-cvc' name="cvc" placeholder="CVC" type="text" fullWidth
+                value={cvv} onChange={e => formatCvv(e.target.value)}
+                onFocus={e => setFocus(e.target.name)} disabled={disabled} />
             </div>
           </div>
-          <button type="submit" fullWidth >FINALIZAR PAGAMENTO</button>
-        </form>
+        </div>
+        <button type="submit" fullWidth >FINALIZAR PAGAMENTO</button>
+      </form>
 
-      </Container>
-    )
+    </Container>
+  )
 }
 
 const Container = styled.div`
   width: 80%;
   max-width: 600px;
-  /* height: 183px;
-  border-radius: 20px;
-  background-color: #898989; */
   margin-top: 17px;
   img  {
     width: 50%;
@@ -100,6 +142,7 @@ const Container = styled.div`
       flex-direction: column;
       width: 50%;
       justify-content: space-around;
+      margin-left: 15px;
      
       
       p {
