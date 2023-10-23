@@ -50,9 +50,32 @@ export default function CardComponent({ getTicket }) {
         toast('Ocorreu algum erro no pagamento do ticket!');
         setDisabled(false)
       })
-
-
   }
+
+  function formatNumber (value) {
+    const numericValue = value.replace(/\D/g, '');
+    if (numericValue.length <= 16) {
+      setCardNumber(numericValue);
+    }
+  }
+
+  function formatValidThru(value) {
+    const numericValue = value.replace(/\D/g, '');
+    if (numericValue.length <= 4) {
+      if (numericValue.length >= 2) {
+        setValidThru(numericValue.substring(0, 2) + '/' + numericValue.substring(2));
+      } else {
+        setValidThru(numericValue);
+      }
+    }
+  };
+
+  function formatCvv (value) {
+    const numericValue = value.replace(/\D/g, '');
+    if (numericValue.length <= 3) {
+      setCvv(numericValue);
+    }
+  };
 
   return (
     <Container>
@@ -66,12 +89,20 @@ export default function CardComponent({ getTicket }) {
             focused={focus}
           />
           <div className='input-box'>
-            <input className='input' name="number" placeholder="Card Number" type="text" fullWidth value={cardNumber} onChange={e => setCardNumber(e.target.value)} onFocus={e => setFocus(e.target.name)} disabled={disabled} />
+            <input className='input' name="number" placeholder="Card Number" type="text" fullWidth
+              value={cardNumber} onChange={e => formatNumber(e.target.value)}
+              onFocus={e => setFocus(e.target.name)} disabled={disabled} />
             <p>E.g.: 49..., 51..., 36..., 37...</p>
-            <input className='input' name="name" placeholder="Name" type="text" fullWidth value={name} onChange={e => setName(e.target.value)} onFocus={e => setFocus(e.target.name)} disabled={disabled} />
+            <input className='input' name="name" placeholder="Name" type="text"
+              fullWidth value={name} onChange={e => setName(e.target.value)}
+              onFocus={e => setFocus(e.target.name)} disabled={disabled} />
             <div>
-              <input className='input-valid' name="expiry" placeholder="Valid Thru" type="text" fullWidth value={validThru} onChange={e => setValidThru(e.target.value)} onFocus={e => setFocus(e.target.name)} disabled={disabled} />
-              <input className='input-cvc' name="cvc" placeholder="CVC" type="text" fullWidth value={cvv} onChange={e => setCvv(e.target.value)} onFocus={e => setFocus(e.target.name)} disabled={disabled} />
+              <input className='input-valid' name="expiry" placeholder="Valid Thru" type="text" fullWidth
+                value={validThru} onChange={e => formatValidThru(e.target.value)}
+                onFocus={e => setFocus(e.target.name)} disabled={disabled} />
+              <input className='input-cvc' name="cvc" placeholder="CVC" type="text" fullWidth
+                value={cvv} onChange={e => formatCvv(e.target.value)}
+                onFocus={e => setFocus(e.target.name)} disabled={disabled} />
             </div>
           </div>
         </div>
