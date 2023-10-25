@@ -19,24 +19,25 @@ export default function Hotel() {
   const { hotels } = useHotel();
   const { booking } = useFindBooking();
   const [selectedHotel, setSelectedHotel] = useState({});
+  const [isChangingRoom, setIsChangingRoom] = useState(false);
 
   useEffect(() => {
-    if(booking) {
+    if (booking) {
       setSelectedHotel(hotels?.find(hotel => hotel.id === booking.Room.hotelId) || {});
     }
   }, [booking, hotels]);
 
-  function checkAccommodationTypes(hotel){
+  function checkAccommodationTypes(hotel) {
     const accommodationTypes = [];
     const capacities = [... new Set(hotel.Rooms.map(r => r.capacity))].sort((a, b) => a - b);
-    for (let i = 0; i < capacities.length; i++){
+    for (let i = 0; i < capacities.length; i++) {
       if (capacities[i] === 1)
         accommodationTypes.push("Single");
       else if (capacities[i] === 2)
         accommodationTypes.push("Double");
       else if (capacities[i] === 3)
         accommodationTypes.push("Triple");
-      else{
+      else {
         accommodationTypes.push("Large(4+)");
         break;
       }
@@ -44,32 +45,38 @@ export default function Hotel() {
     return accommodationTypes.join(', ');
   }
 
+  function changeRoom() {
+    setSelectedHotel({});
+    setIsChangingRoom(prev => !prev);
+  }
+
   return (
     <div>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-      {booking && Object.keys(selectedHotel).length > 0 ?
-      <>
-        <Typography variant="h5" color='#8E8E8E' mb={2}>Você já escolheu seu quarto:</Typography>
-        <HotelCard
-          hotel={selectedHotel}
-          isSelected={true}
-          checkAccommodationTypes={checkAccommodationTypes}
-          setSelectedHotel={setSelectedHotel}
-          isBooked={true}
-          booking={booking}
-        />
-      </>
-       : <>
-            { !ticket.ticket ?
-            <UnauthorizedScreen firstLine="Você precisa completar sua inscrição antes" secondLine="de prosseguir pra escolha de hospedagem"/> :
-            ticket.ticket.status !== 'PAID'  ?
-            <UnauthorizedScreen firstLine="Você precisa ter confirmado pagamento antes" secondLine="de fazer a escolha de hospedagem"/> :
-            !ticket.ticket.TicketType.includesHotel ?
-            <UnauthorizedScreen firstLine="Sua modalidade de ingresso não inclui hospedagem" secondLine="Prossiga para a escolha de atividades"/> : ""}
+      {booking && !isChangingRoom && Object.keys(selectedHotel).length > 0 ?
+        <>
+          <Typography variant="h5" color='#8E8E8E' mb={2}>Você já escolheu seu quarto:</Typography>
+          <HotelCard
+            hotel={selectedHotel}
+            isSelected={true}
+            checkAccommodationTypes={checkAccommodationTypes}
+            setSelectedHotel={setSelectedHotel}
+            isBooked={true}
+            booking={booking}
+            changeRoom={changeRoom}
+          />
+        </>
+        : <>
+          {!ticket.ticket ?
+            <UnauthorizedScreen firstLine="Você precisa completar sua inscrição antes" secondLine="de prosseguir pra escolha de hospedagem" /> :
+            ticket.ticket.status !== 'PAID' ?
+              <UnauthorizedScreen firstLine="Você precisa ter confirmado pagamento antes" secondLine="de fazer a escolha de hospedagem" /> :
+              !ticket.ticket.TicketType.includesHotel ?
+                <UnauthorizedScreen firstLine="Sua modalidade de ingresso não inclui hospedagem" secondLine="Prossiga para a escolha de atividades" /> : ""}
           <div>
-            { hotels && hotels.length > 0 ?
+            {hotels && hotels.length > 0 ?
               <HotelsWrapper>
-                { hotels.map(h =>
+                {hotels.map(h =>
                   <HotelCard
                     key={h.id}
                     hotel={h}
@@ -82,8 +89,8 @@ export default function Hotel() {
               : ""
             }
           </div>
-          {selectedHotel?.id && <Rooms hotel={selectedHotel} />}
-      </>
+          {selectedHotel?.id && <Rooms hotel={selectedHotel} isChangingRoom={isChangingRoom} />}
+        </>
       }
     </div>
   );
