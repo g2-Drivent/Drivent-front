@@ -13,17 +13,7 @@ import EventInfoContext from '../../contexts/EventInfoContext';
 import UserContext from '../../contexts/UserContext';
 
 import useSignIn from '../../hooks/api/useSignIn';
-import { ThemeProvider } from 'styled-components';
-import { createTheme } from '@mui/material';
 import GitHUbButton from '../../components/Form/gitHubButton';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main:'#000000'
-    }
-  },
-});
 
 
 

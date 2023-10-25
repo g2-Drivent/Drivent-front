@@ -10,7 +10,7 @@ function redirectToGitHub(){
         response_type: 'code',
         scope:'user',
         client_id: CLIENT_ID,
-        redirect_uri:"http://localhost:5173/sign-in"
+        redirect_uri:"http://localhost:5173/sign-in/github"
     });
     const authURL= `${GITHUB_URL}?${params.toString()}`;
 
