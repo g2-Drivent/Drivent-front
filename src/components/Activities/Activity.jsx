@@ -52,13 +52,15 @@ const ActivityComponent = styled.div`
 
     border-radius: 5px;
 
-    background-color: #F1F1F1;
+    background-color: ;
+    background: ${p => p.$status === "joined" ? "#D0FFDB" : "#F1F1F1"};
 
     div {
         height: 100%;
         width: 100%;
 
         padding: 12px 0px 12px 10px;
+	background: ${p => p.$status === "joined" ? "#D0FFDB" : "transparent"};
 
         font-family: "Roboto", sans-serif;
         font-weight: 700;
@@ -78,8 +80,9 @@ const ActivityComponent = styled.div`
         width: 100px;
 
         border: none;
-        border-left: 2px solid #CFCFCF;
-        background: transparent;
+        border-left: 2px solid ${p => p.$status === "joined" ? "#99E8A1" : "#CFCFCF"};
+	    
+	background: ${p => p.$status === "joined" ? "#D0FFDB" : "transparent"};
 
         color: ${p => p.$status === "closed" ? "#CC6666" : "#078632"};
     }
