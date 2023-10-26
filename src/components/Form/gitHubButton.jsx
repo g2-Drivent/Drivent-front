@@ -1,16 +1,17 @@
-import { colors, createTheme } from '@mui/material';
-import MuiButton from '@mui/material/Button';
 import styled, { ThemeProvider } from 'styled-components';
 
 function redirectToGitHub(){
     alert("Redirecionando para o gitHub");
-    const GITHUB_URL = "https://github.com/login/oauth/authorize";
-    const CLIENT_ID = "210788058d38558c6d30";
+    
+    const GITHUB_URL = import.meta.env.VITE_API_GITHUB_URL;
+    const CLIENT_ID = import.meta.env.VITE_API_CLIENT_ID;
+    const REDIRECT_URI = import.meta.env.VITE_API_REDIRECT_URI;
+
     const params = new URLSearchParams({
         response_type: 'code',
         scope:'user',
         client_id: CLIENT_ID,
-        redirect_uri:"http://localhost:5173/sign-in/github"
+        redirect_uri: REDIRECT_URI
     });
     const authURL= `${GITHUB_URL}?${params.toString()}`;
 
@@ -19,6 +20,8 @@ function redirectToGitHub(){
 
 
 export default function GitHUbButton(){
+
+    
     return (
             <StyledMuiButton onClick={redirectToGitHub}>
                 <ion-icon name="logo-github"></ion-icon>
