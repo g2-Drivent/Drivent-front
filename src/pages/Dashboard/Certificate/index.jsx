@@ -14,7 +14,6 @@ export default function Certificate() {
   const { eventInfo } = useContext(EventInfoContext);
   const timeFromEndOfEvent = dayjs(dayjs()).diff(eventInfo.endsAt, 'hour');
   const { register } = useRegister();
-  console.log(register.length);
 
   return (<>
     { timeFromEndOfEvent < 24 ? <UnauthorizedScreen firstLine="O certificado ficará disponível apenas 1 dia após a realização do evento."/> : 
