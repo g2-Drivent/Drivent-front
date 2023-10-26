@@ -10,6 +10,8 @@ export function ActivityBoard({data}) {
 
     function genColums() {
 
+        if(!data) return;
+
         // Sort events by places.
         const places = {};
         data.forEach((act => {
@@ -51,7 +53,7 @@ export function ActivityBoard({data}) {
     useEffect(() => {
         genColums();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    },[data])
 
     return (
         <Board>

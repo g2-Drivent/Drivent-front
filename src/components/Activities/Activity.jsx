@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 import enter from "../../assets/enter_icon.svg";
 import check from "../../assets/green_check.svg";
 import cross from "../../assets/red_cross.svg";
@@ -55,6 +55,22 @@ export function Activity({activityId, title, subTitle, duration = 60, spacesLeft
     )
 }
 
+const showUp = keyframes`
+    from {
+        position: relative;
+        top: -8px;
+        opacity: 0;
+    }
+
+    40% {
+        top: 0px
+    }
+
+    to {
+        opacity: 100%;
+    }
+`
+
 const ActivityComponent = styled.div`
 
     width: 100%;
@@ -68,8 +84,9 @@ const ActivityComponent = styled.div`
 
     border-radius: 5px;
 
-    background-color: ;
     background: ${p => p.$status === "joined" ? "#D0FFDB" : "#F1F1F1"};
+
+    animation: ${showUp} 0.2s ease-in ;
 
     div {
         height: 100%;
@@ -84,7 +101,12 @@ const ActivityComponent = styled.div`
         line-height: 14px;
         color: #343434; 
 
+        h1 {
+            animation: ${showUp} 0.4s linear ;
+        }
+        
         h2 {
+            animation: ${showUp} 0.8s linear ;
             margin-top: 6px;
             font-weight: 400;
         }
