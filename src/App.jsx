@@ -20,6 +20,7 @@ import { EventInfoProvider } from './contexts/EventInfoContext';
 import { UserProvider } from './contexts/UserContext';
 
 import useToken from './hooks/useToken';
+import PDFCertificate from './pages/Dashboard/Certificate/PDFCertificate';
 import GitHubSign from './pages/SignIn/gitHubSign';
 
 export default function App() {
@@ -49,6 +50,7 @@ export default function App() {
                 <Route path="certificate" element={<Certificate />} />
                 <Route index path="*" element={<Navigate to="/dashboard/subscription" />} />
               </Route>
+              <Route path="/certificate" element={<PDFCertificate />} />
             </Routes>
           </Router>
         </UserProvider>
