@@ -1,54 +1,10 @@
-import dayjs, { Dayjs } from "dayjs";
+/* eslint-disable react/prop-types */
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components"
 import { Activity } from "./Activity";
 
-const data = [
-    {
-        title: "Gigachad: Como se tornar um?",
-        status: "closed",
-        place: "Auditório Principal",
-        date: dayjs(1698148800).toISOString(),
-        duration: 60
-    },
-    {
-        title: "Tio do jorel, a série infantil mais controvérsa.",
-        status: "joined",
-        place: "Auditório Principal 7",
-        date: dayjs(1698152400).toISOString(),
-        duration: 90
-    },
-    {
-        title: "Tio do jorel, a série infantil mais controvérsa.",
-        status: "joined",
-        place: "Major's palace",
-        date: dayjs(1698152400).toISOString(),
-        duration: 90
-    },
-    {
-        title: "Tio do jorel, a série infantil mais controvérsa.",
-        status: "joined",
-        place: "Major's palace 2",
-        date: dayjs(1698152400).toISOString(),
-        duration: 90
-    },
-// Status enum:
-// "joined" Evento tenha register do usuário.
-// "open"   Evento tenha registers < capacity.
-// "closed" Evento em que register count == capacity.
-    {
-        activityId: 1,
-        title: "Whatszac jr? Quem é esse cara e porquê está tão famoso?",
-        status: "open",
-        spacesLeft: 99,
-        place: "Beco atrás do prédio",
-        date: dayjs(1698148800).toISOString(),
-        duration: 60
-    }
-];
-
-
-export function ActivityBoard() {
+export function ActivityBoard({data}) {
 
     const [columns, setColumns] = useState();
 
@@ -94,6 +50,7 @@ export function ActivityBoard() {
 
     useEffect(() => {
         genColums();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     return (
