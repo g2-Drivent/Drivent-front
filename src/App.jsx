@@ -21,6 +21,7 @@ import { UserProvider } from './contexts/UserContext';
 
 import useToken from './hooks/useToken';
 import PDFCertificate from './pages/Dashboard/Certificate/PDFCertificate';
+import GitHubSign from './pages/SignIn/gitHubSign';
 
 export default function App() {
   return (
@@ -33,7 +34,7 @@ export default function App() {
               <Route path="/" element={<Countdown />} />
               <Route path="/enroll" element={<Enroll />} />
               <Route path="/sign-in" element={<SignIn />} />
-
+              <Route path="/sign-in/github" element={<GitHubSign/>}/>
               <Route
                 path="/dashboard"
                 element={
