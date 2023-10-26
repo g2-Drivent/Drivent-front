@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -14,79 +14,83 @@ const countBookings = (hotel, roomId) => {
 };
 
 const HotelCard = ({
-    hotel,
-    isSelected,
-    checkAccommodationTypes,
-    setSelectedHotel=()=>{ return ;},
-    isBooked=false,
-    booking={},
- }) => {
-    let nOfBookings;
-    if(isBooked) {
-      nOfBookings = countBookings(hotel, booking['Room'].id);
-    }
-    return (
+  hotel,
+  isSelected,
+  checkAccommodationTypes,
+  setSelectedHotel = () => { return; },
+  isBooked = false,
+  booking = {},
+  changeRoom
+}) => {
+  let nOfBookings;
+  if (isBooked && Object.keys(booking).length > 0) {
+    nOfBookings = countBookings(hotel, booking['Room'].id);
+  }
+
+  return (
     <>
       <HotelContainer
-          onClick={() => {
-              if(isBooked) return;
-              if(isSelected) {
-              setSelectedHotel({});
-              } else {
-              setSelectedHotel(hotel)
-              }
-          }}
-          selected={isSelected}
-          >
-              <img src={hotel.image} alt={`${hotel.name} picture`} />
-              <h3>{hotel.name}</h3>
-              <div>
-              {isBooked
-                ? <>
-                  <h4>Quarto reservado:</h4>
-                  <p>{`${booking['Room'].id} (${typeMap[booking['Room'].capacity] || 'Large(4+)'})`}</p>
-                </>
-                : <>
-                  <h4>Tipos de acomodação:</h4>
-                  <p>{checkAccommodationTypes(hotel)}</p>
-                </>
-              }
-              </div>
-              <div>
-              {isBooked
-                ? <>
-                  <h4>Pessoas no seu quarto</h4>
-                  <p>Você{' '}{nOfBookings > 1 ? `e mais ${nOfBookings - 1} pessoas` : ''}</p>
-                </>
-                :  <>
-                  <h4>Vagas disponíveis:</h4>
-                  <p>
-                      {
-                      hotel.Rooms.reduce((ac, cv) => ac + cv.capacity, 0) -
-                      hotel.Rooms.reduce((ac, cv) => ac + cv.Booking.length, 0)
-                      }
-                  </p>
-                </>
-              }
-              </div>
-        </HotelContainer>
-        {isBooked &&
-          <>
-            <Button disabled variant='contained' color='inherit'>TROCAR DE QUARTO</Button>
-            <Typography color='GrayText' variant='subtitle1' mt={0.2}>Em breve...</Typography>
-          </>
-        }
+        onClick={() => {
+          if (isBooked) return;
+          if (isSelected) {
+            setSelectedHotel({});
+          } else {
+            setSelectedHotel(hotel)
+          }
+        }}
+        selected={isSelected}
+      >
+        <img src={hotel.image} alt={`${hotel.name} picture`} />
+        <h3>{hotel.name}</h3>
+        <div>
+          {isBooked
+            ? <>
+              <h4>Quarto reservado:</h4>
+              <p>{`${booking['Room'].id} (${typeMap[booking['Room'].capacity] || 'Large(4+)'})`}</p>
+            </>
+            : <>
+              <h4>Tipos de acomodação:</h4>
+              <p>{checkAccommodationTypes(hotel)}</p>
+            </>
+          }
+        </div>
+        <div>
+          {isBooked
+            ? <>
+              <h4>Pessoas no seu quarto</h4>
+              <p>Você{' '}{nOfBookings > 1 ? `e mais ${nOfBookings - 1} pessoas` : ''}</p>
+            </>
+            : <>
+              <h4>Vagas disponíveis:</h4>
+              <p>
+                {
+                  hotel.Rooms.reduce((ac, cv) => ac + cv.capacity, 0) -
+                  hotel.Rooms.reduce((ac, cv) => ac + cv.Booking.length, 0)
+                }
+              </p>
+            </>
+          }
+        </div>
+      </HotelContainer>
+      {isBooked &&
+        <Button
+          onClick={() => changeRoom()}
+          variant='contained'
+          color='inherit'
+        >TROCAR DE QUARTO</Button>
+      }
     </>
   )
 }
 
 HotelCard.propTypes = {
-    hotel: PropTypes.object,
-    isSelected: PropTypes.bool,
-    setSelectedHotel: PropTypes.func,
-    checkAccommodationTypes: PropTypes.func,
-    isBooked: PropTypes.bool,
-    booking: PropTypes.object,
+  hotel: PropTypes.object,
+  isSelected: PropTypes.bool,
+  setSelectedHotel: PropTypes.func,
+  checkAccommodationTypes: PropTypes.func,
+  isBooked: PropTypes.bool,
+  booking: PropTypes.object,
+  changeRoom: PropTypes.func,
 }
 
 const HotelContainer = styled.div`
