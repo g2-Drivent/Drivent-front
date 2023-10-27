@@ -4,6 +4,9 @@ import check from "../../assets/green_check.svg";
 import cross from "../../assets/red_cross.svg";
 import Loader from "react-loader-spinner";
 import { useState } from "react";
+import { joinActivity } from "../../services/activitiesApi";
+import useToken from "../../hooks/useToken";
+import { toast } from "react-toastify";
 
 // Status enum:
 // "joined"
@@ -15,13 +18,22 @@ import { useState } from "react";
 export function Activity({activityId, title, subTitle, duration = 60, spacesLeft, status = "open"}) {
 
     const [internalStatus, setInternalStatus] = useState(status);
+    const token = useToken(); // pouquissimo otimizado..
+    
 
-    function Join() {
+    async function Join() {
         if(internalStatus !== "open") return;
 
         setInternalStatus("loading");
-        console.log(activityId);
-        // Call API. (And expect to ActivityBoard refresh the page);
+        const response = await joinActivity(token, activityId);
+        if(response === 409) {
+            toast("Você não pode se inscrever nessa atividade pois já está inscrito em outra atividade nesse horário. Caso considere isso um erro, contate a organização do evento.")
+            setInternalStatus("open");
+        }
+        if(response === 201) { 
+            toast("Inscrição na atividade realizada com sucesso!")
+            setInternalStatus("joined");
+        }
     }
 
     return (

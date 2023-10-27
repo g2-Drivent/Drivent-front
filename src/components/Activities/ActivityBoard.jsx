@@ -46,6 +46,7 @@ export function ActivityBoard({data}) {
                 status={act.status}
                 duration={act.duration}
                 spacesLeft={act.spacesLeft}
+                activityId={act.activityId}
             />
         })
     }
@@ -57,7 +58,7 @@ export function ActivityBoard({data}) {
 
     return (
         <Board>
-            {columns ?? "Loading"}
+            {columns}
         </Board>
     )
 

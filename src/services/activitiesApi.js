@@ -1,13 +1,5 @@
 import api from './api';
 
-export async function joinActivity(token){
-    const response = await api.get('/tickets',{
-        headers:{
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    return response.data;
-}
 
 export async function getActivitiesByDay(token, dateString){
     const response = await api.get(`/activities/${dateString}`,{
@@ -16,4 +8,20 @@ export async function getActivitiesByDay(token, dateString){
         },
     });
     return response.data;
+}
+
+export async function joinActivity(token, activityId){
+    let response;
+
+    try {
+        response = await api.post(`/activities/register/${activityId}`,{}, {
+            headers:{
+                Authorization: `Bearer ${token}`,
+            },
+        });
+    
+        return response.status;
+    } catch (error) {
+        return error.response.status;
+    }
 }
