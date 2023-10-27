@@ -1,5 +1,13 @@
 import api from './api';
 
+export async function getActivitiesDate(token) {
+    const response = await api.get(`/activities/`,{
+        headers:{
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+}
 
 export async function getActivitiesByDay(token, dateString){
     const response = await api.get(`/activities/${dateString}`,{
