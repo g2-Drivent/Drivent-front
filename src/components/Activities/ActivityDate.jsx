@@ -38,7 +38,7 @@ export function ActivityDate({ updateBoard }) {
             )}
             {date.length > 0 && (
                 date
-                    .filter(day => dayjs(day) >= dayjs().startOf('day'))
+                    //.filter(day => dayjs(day) >= dayjs().startOf('day'))
                     .map(day => (
                         <Button className={selected === dayjs(day).format('YYYY-MM-DD').toString() ? 'selected' : ''}
                             key={day} onClick={() => (select(day),
