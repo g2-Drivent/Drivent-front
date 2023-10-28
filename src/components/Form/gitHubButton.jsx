@@ -1,7 +1,6 @@
 import styled, { ThemeProvider } from 'styled-components';
 
 function redirectToGitHub(){
-    alert("Redirecionando para o gitHub");
     
     const GITHUB_URL = import.meta.env.VITE_API_GITHUB_URL;
     const CLIENT_ID = import.meta.env.VITE_API_CLIENT_ID;
