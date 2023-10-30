@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     round: {
         display: "inline",
         margin: "0 auto",
-        marginLeft: "-25%",
+       // marginLeft: "-25%",
         height: "100%",
         width: "auto"
     },

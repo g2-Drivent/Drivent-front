@@ -7,17 +7,20 @@ import { StyledTypography } from "../../../components/PersonalInformationForm";
 import styled from "styled-components";
 import UnauthorizedScreen from "../../../components/unauthorizedScreen";
 import useRegister from "../../../hooks/api/useRegister";
+import useTicket from "../../../hooks/api/useTicket";
 
 export default function Certificate() {
 
   const { eventInfo } = useContext(EventInfoContext);
+  const { ticket } = useTicket();
+  console.log(ticket);
   const timeFromEndOfEvent = dayjs(dayjs()).diff(eventInfo.endsAt, 'hour');
   const { register } = useRegister();
-  console.log(register);
+
 
   return (<>
     { timeFromEndOfEvent < 24 ? <UnauthorizedScreen firstLine="O certificado ficará disponível apenas 1 dia após a realização do evento."/> : 
-     register && register.length < 5 ? <UnauthorizedScreen firstLine="Para participantes presenciais, é necessário ter participado" secondLine="de pelo menos cinco atividades para emitir o certificado."/>  : 
+     ticket && !ticket.TicketType.isRemote && register && register.length < 5 ? <UnauthorizedScreen firstLine="Para participantes presenciais, é necessário ter participado" secondLine="de pelo menos cinco atividades para emitir o certificado."/>  : 
     <>
     <StyledTypography variant="h4">Certificado</StyledTypography>
     <Content>
