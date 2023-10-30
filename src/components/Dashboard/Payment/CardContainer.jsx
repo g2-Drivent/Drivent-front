@@ -23,7 +23,7 @@ export default function CardComponent({ getTicket }) {
   function payment(e) {
     e.preventDefault();
 
-    const url = `${import.meta.env.VITE_API_URL}/payments/process`;
+    const url = `${import.meta.env.VITE_API_URL}payments/process`;
     const card = {
       ticketId: ticket.id,
       cardData: {
